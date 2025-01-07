@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 from io import StringIO
 
-CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/e2b912264059379a8fe1d9c1c85d95d8738c1153/inventory.csv" # Ganti dengan URL raw file CSV Anda
+CSV_URL = "https://drive.google.com/file/d/1SF1mLYPFoc2OhACgXfDCoYGJafJHLAUr/view?usp=sharing" # Ganti dengan URL raw file CSV Anda
 
 @st.cache_data(show_spinner=False)
 def load_data(csv_url):
