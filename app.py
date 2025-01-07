@@ -3,18 +3,6 @@ import pandas as pd
 
 CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
 
-@st.cache_resource(hash_funcs={pd.DataFrame: lambda _: None})
-def load_data(csv_url):
-    response = requests.get(csv_url)
-    response.raise_for_status()
-    inventory = pd.read_csv(StringIO(response.text))
-    return inventory
-
-def save_data(inventory, csv_url):
-    csv_buffer = StringIO()
-    inventory.to_csv(csv_buffer, index=False)
-    # Gunakan requests atau GitPython untuk menyimpan csv_buffer ke csv_url di GitHub
-
 inventory = load_data(CSV_URL)
 
 st.title("Manajemen Inventaris")
