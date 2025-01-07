@@ -1,22 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-@st.cache_data(experimental_allow_widgets=True)  # Add allow_widgets=True
-   def add_product(product_id, product_name, category, price, rating, stock):
-       global inventory
-       new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
-                      'price': price, 'rating': rating, 'stock': stock}
-       inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
-
-   @st.cache_data(experimental_allow_widgets=True)
-   def update_stock(product_id, quantity):
-       inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
-
-   @st.cache_data(experimental_allow_widgets=True)
-   def remove_product(product_id):
-       global inventory
-       inventory = inventory[inventory['product_id'] != product_id]
-       st.success(f"Produk dengan ID {product_id} berhasil dihapus.")
 # Dataset yang berisi 30 produk
 data = {
     'product_id': list(range(1, 31)),
@@ -70,15 +54,18 @@ def search_product(query):
         st.subheader("Hasil Pencarian")
         st.dataframe(results, use_container_width=True)
 
+@st.cache_data(experimental_allow_widgets=True)
 def add_product(product_id, product_name, category, price, rating, stock):
     global inventory
     new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
 
+@st.cache_data(experimental_allow_widgets=True)
 def update_stock(product_id, quantity):
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
 
+@st.cache_data(experimental_allow_widgets=True)
 def remove_product(product_id):
     global inventory
     inventory = inventory[inventory['product_id'] != product_id]
