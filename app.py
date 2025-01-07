@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
+import requests
+from io import StringIO
 
-CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
+CSV_URL = "https://raw.githubusercontent.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
 
 @st.cache_data(show_spinner=False)
 def load_data(csv_url):
