@@ -12,9 +12,6 @@ CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # G
    # Panggil fungsi load_data untuk mendapatkan DataFrame inventory
    inventory = load_data()
 
-# Membuat DataFrame dari data
-inventory = pd.DataFrame(data)
-
 def display_inventory():
     st.subheader("Daftar Inventaris")
     st.dataframe(inventory, use_container_width=True)  # Display using st.dataframe
