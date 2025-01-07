@@ -3,6 +3,20 @@ import pandas as pd
 
 CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
 
+@st.cache_data(show_spinner=False)
+def load_data(csv_url):
+    try:
+        response = requests.get(csv_url)
+        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+        inventory = pd.read_csv(StringIO(response.text))
+        return inventory
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error loading data from {csv_url}: {e}")
+        return pd.DataFrame()  # Return empty DataFrame if loading fails
+
+# Panggil fungsi untuk membaca data
+inventory = load_data(CSV_URL)
+
 # Membuat DataFrame dari data
 inventory = pd.DataFrame(data)
 
