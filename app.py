@@ -1,43 +1,16 @@
 import streamlit as st
 import pandas as pd
 
-# Dataset yang berisi 30 produk
-data = {
-    'product_id': list(range(1, 31)),
-    'product_name': [
-        'Kursi Kayu', 'Meja Makan', 'Kursi Kantor', 'Rak Buku', 'Meja Kopi',
-        'Sofa Recliner', 'Meja Samping', 'Kursi Makan', 'Rak TV', 'Kursi Santai',
-        'Lemari Pakaian', 'Meja Belajar', 'Sofa Bed', 'Kursi Lesehan', 'Rak Dinding',
-        'Meja Rias', 'Kursi Tamu', 'Lemari Penyimpanan', 'Meja Samping Modern', 'Sofa Minimalis',
-        'Kursi Bar', 'Meja Kerja', 'Kursi Lipat', 'Rak Sepatu', 'Meja TV',
-        'Sofa Keluarga', 'Kursi Goyang', 'Meja Makan Bulat', 'Rak Dapur', 'Kursi Santai Modern'
-    ],
-    'category': [
-        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
-        'Sofa', 'Meja', 'Kursi', 'Rak', 'Sofa',
-        'Lemari', 'Meja', 'Sofa', 'Kursi', 'Rak',
-        'Meja', 'Kursi', 'Lemari', 'Meja', 'Sofa',
-        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
-        'Sofa', 'Kursi', 'Meja', 'Rak', 'Kursi'
-    ],
-    'price': [
-        500000, 1500000, 750000, 1000000, 800000,
-        3000000, 400000, 600000, 1200000, 2000000,
-        2500000, 900000, 3500000, 450000, 700000,
-        1000000, 1200000, 2000000, 500000, 2800000,
-        600000, 1200000, 300000, 800000, 1500000,
-        3500000, 900000, 2000000, 1000000, 600000
-    ],
-    'rating': [
-        4.5, 4.7, 4.2, 4.6, 4.3,
-        4.8, 4.1, 4.4, 4.5, 4.6,
-        4.7, 4.3, 4.9, 4.2, 4.5,
-        4.6, 4.8, 4.1, 4.4, 4.3,
-        4.7, 4.5, 4.2, 4.6, 4.4,
-        4.8, 4.3, 4.5, 4.6, 4.2
-    ],
-    'stock': [10] * 30  # Menambahkan stok awal untuk setiap produk
-}
+CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
+
+   # Baca file CSV dari URL
+   @st.cache_data  # Cache data untuk meningkatkan kinerja
+   def load_data():
+       inventory = pd.read_csv(CSV_URL)
+       return inventory
+
+   # Panggil fungsi load_data untuk mendapatkan DataFrame inventory
+   inventory = load_data()
 
 # Membuat DataFrame dari data
 inventory = pd.DataFrame(data)
