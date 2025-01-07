@@ -10,11 +10,11 @@ def load_data(csv_url):
       inventory = pd.read_csv(csv_url)
       return inventory
 
-   # Panggil fungsi `load_data` dan sertakan URL CSV dan hash-nya
-   inventory = load_data(CSV_URL)
+# Panggil fungsi `load_data` dan sertakan URL CSV dan hash-nya
+inventory = load_data(CSV_URL)
 
-   # Membuat DataFrame dari data
-   inventory = pd.DataFrame(data)
+# Membuat DataFrame dari data
+inventory = pd.DataFrame(data)
 
 def display_inventory():
     st.subheader("Daftar Inventaris")
