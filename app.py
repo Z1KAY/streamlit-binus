@@ -8,6 +8,9 @@ inventory = load_data(CSV_URL)
 st.title("Manajemen Inventaris")
 st.dataframe(inventory)
 
+# Membuat DataFrame dari data
+inventory = pd.DataFrame(data)
+
 def display_inventory():
     st.subheader("Daftar Inventaris")
     st.dataframe(inventory, use_container_width=True)  # Display using st.dataframe
