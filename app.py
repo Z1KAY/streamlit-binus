@@ -54,18 +54,15 @@ def search_product(query):
         st.subheader("Hasil Pencarian")
         st.dataframe(results, use_container_width=True)
 
-@st.cache_data(experimental_allow_widgets=True)
 def add_product(product_id, product_name, category, price, rating, stock):
     global inventory
     new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
 
-@st.cache_data(experimental_allow_widgets=True)
 def update_stock(product_id, quantity):
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
 
-@st.cache_data(experimental_allow_widgets=True)
 def remove_product(product_id):
     global inventory
     inventory = inventory[inventory['product_id'] != product_id]
@@ -104,7 +101,6 @@ def main():
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         if st.button("Hapus"):
             remove_product(product_id)
-
-st.cache_data.clear()
+            
 if __name__ == "__main__":
     main()
