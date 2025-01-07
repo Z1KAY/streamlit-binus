@@ -10,7 +10,7 @@ CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # G
        return inventory
 
    # Panggil fungsi load_data untuk mendapatkan DataFrame inventory
-   inventory = load_data(CSV_URL)
+   inventory = load_data()
 
 # Membuat DataFrame dari data
 inventory = pd.DataFrame(data)
