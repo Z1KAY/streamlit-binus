@@ -1,16 +1,17 @@
 import streamlit as st
-import pandas as pd
+   import pandas as pd
+   import hashlib
+   import os
 
-CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" # Ganti dengan URL raw file CSV Anda
+   CSV_URL = "https://github.com/Z1KAY/streamlit-binus/blob/main/inventory.csv" 
 
-   # Baca file CSV dari URL
-   @st.cache_data  # Cache data untuk meningkatkan kinerja
-   def load_data():
-       inventory = pd.read_csv(CSV_URL)
+   @st.cache_resource(hash_funcs={pd.DataFrame: lambda _: None})
+   def load_data(csv_url):
+       inventory = pd.read_csv(csv_url)
        return inventory
 
-   # Panggil fungsi load_data untuk mendapatkan DataFrame inventory
-   inventory = load_data()
+   # Panggil fungsi `load_data` dan sertakan URL CSV dan hash-nya
+   inventory = load_data(CSV_URL)
 
 # Membuat DataFrame dari data
 inventory = pd.DataFrame(data)
