@@ -1,23 +1,42 @@
 import streamlit as st
 import pandas as pd
-import requests
-from io import StringIO
 
-CSV_URL = "https://drive.google.com/file/d/1SF1mLYPFoc2OhACgXfDCoYGJafJHLAUr/view?usp=sharing" # Ganti dengan URL raw file CSV Anda
-
-@st.cache_data(show_spinner=False)
-def load_data(csv_url):
-    try:
-        response = requests.get(csv_url)
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        inventory = pd.read_csv(StringIO(response.text))
-        return inventory
-    except requests.exceptions.RequestException as e:
-        st.error(f"Error loading data from {csv_url}: {e}")
-        return pd.DataFrame()  # Return empty DataFrame if loading fails
-
-# Panggil fungsi untuk membaca data
-inventory = load_data(CSV_URL)
+data = {
+    'product_id': list(range(1, 31)),
+    'product_name': [
+        'Kursi Kayu', 'Meja Makan', 'Kursi Kantor', 'Rak Buku', 'Meja Kopi',
+        'Sofa Recliner', 'Meja Samping', 'Kursi Makan', 'Rak TV', 'Kursi Santai',
+        'Lemari Pakaian', 'Meja Belajar', 'Sofa Bed', 'Kursi Lesehan', 'Rak Dinding',
+        'Meja Rias', 'Kursi Tamu', 'Lemari Penyimpanan', 'Meja Samping Modern', 'Sofa Minimalis',
+        'Kursi Bar', 'Meja Kerja', 'Kursi Lipat', 'Rak Sepatu', 'Meja TV',
+        'Sofa Keluarga', 'Kursi Goyang', 'Meja Makan Bulat', 'Rak Dapur', 'Kursi Santai Modern'
+    ],
+    'category': [
+        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
+        'Sofa', 'Meja', 'Kursi', 'Rak', 'Sofa',
+        'Lemari', 'Meja', 'Sofa', 'Kursi', 'Rak',
+        'Meja', 'Kursi', 'Lemari', 'Meja', 'Sofa',
+        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
+        'Sofa', 'Kursi', 'Meja', 'Rak', 'Kursi'
+    ],
+    'price': [
+        500000, 1500000, 750000, 1000000, 800000,
+        3000000, 400000, 600000, 1200000, 2000000,
+        2500000, 900000, 3500000, 450000, 700000,
+        1000000, 1200000, 2000000, 500000, 2800000,
+        600000, 1200000, 300000, 800000, 1500000,
+        3500000, 900000, 2000000, 1000000, 600000
+    ],
+    'rating': [
+        4.5, 4.7, 4.2, 4.6, 4.3,
+        4.8, 4.1, 4.4, 4.5, 4.6,
+        4.7, 4.3, 4.9, 4.2, 4.5,
+        4.6, 4.8, 4.1, 4.4, 4.3,
+        4.7, 4.5, 4.2, 4.6, 4.4,
+        4.8, 4.3, 4.5, 4.6, 4.2
+    ],
+    'stock': [10] * 30  # Menambahkan stok awal untuk setiap produk
+}
 
 # Membuat DataFrame dari data
 inventory = pd.DataFrame(data)
