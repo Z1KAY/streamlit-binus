@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("tes lagi")
+st.title("Profit Counter Calculator")
 
 # Inisialisasi session state untuk menyimpan data tabel
 if "df" not in st.session_state:
