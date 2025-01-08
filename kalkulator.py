@@ -33,23 +33,28 @@ if st.button("Add"):
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
 # Menampilkan tabel dengan checkbox di sebelah kolom "Keuntungan"
+displayed_df = st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan"]].copy()  # Salin DataFrame untuk ditampilkan
 for index in st.session_state.df.index:
     # Checkbox untuk memilih baris
     st.session_state.df.loc[index, "Pilih"] = st.checkbox("Pilih", key=f"checkbox_{index}", value=st.session_state.df.loc[index, "Pilih"])
- 
-st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pilih"]])
 
-# Tombol "Hapus" untuk menghapus semua baris yang dipilih
-if st.button("Hapus yang dipilih"):
-    indexes_to_delete = st.session_state.df[st.session_state.df["Pilih"]].index
-    st.session_state.df = st.session_state.df.drop(indexes_to_delete)
-    st.rerun()
+st.write(displayed_df) # Tampilkan DataFrame tanpa kolom "Pilih"
+
+# Menampilkan tombol "Hapus" jika ada baris yang dipilih
+if any(st.session_state.df["Pilih"]):
+    if st.button("Hapus yang dipilih"):
+        indexes_to_delete = st.session_state.df[st.session_state.df["Pilih"]].index
+        st.session_state.df = st.session_state.df.drop(indexes_to_delete)
+        st.rerun()
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
     label="Download CSV",
     data=csv,
+    file_name="kalkulator_hasil.csv",
+    mime="text/csv",
+)
     file_name="kalkulator_hasil.csv",
     mime="text/csv",
 )
