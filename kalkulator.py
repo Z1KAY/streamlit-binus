@@ -40,7 +40,7 @@ if st.button("Hapus"):
     try:
         st.session_state.df = st.session_state.df.drop(index=row_to_delete)
         st.success(f"Baris {row_to_delete} berhasil dihapus.")
-        st.experimental_rerun() # Menjalankan ulang skrip untuk memperbarui UI
+        st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
     except KeyError:
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
