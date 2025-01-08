@@ -41,7 +41,7 @@ st.write(st.session_state.df)
 for index in st.session_state.df.index:
     if st.session_state.get(f"delete_{index}"):
         st.session_state.df = st.session_state.df.drop(index=index)
-        st.experimental_rerun()
+        st.rerun()
         break
 
 # Tombol unduh CSV
