@@ -51,3 +51,4 @@ st.download_button(
     data=csv,
     file_name="kalkulator_hasil.csv",
     mime="text/csv",
+)
