@@ -32,20 +32,18 @@ if st.button("Add"):
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
-# Tambahkan kolom "Actions" dan tombol "Hapus" (Dimodifikasi)
+# Menampilkan tabel dengan checkbox di sebelah kolom "Keuntungan"
 for index in st.session_state.df.index:
-    # Checkbox untuk mengaktifkan/menonaktifkan baris
-    checked = st.checkbox("Pilih", key=f"checkbox_{index}", value=st.session_state.df.loc[index, "Pilih"])
-    st.session_state.df.loc[index, "Pilih"] = checked
+    # Checkbox untuk memilih baris
+    st.session_state.df.loc[index, "Pilih"] = st.checkbox("Pilih", key=f"checkbox_{index}", value=st.session_state.df.loc[index, "Pilih"])
+ 
+st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pilih"]])
 
-    # Tombol "Hapus" hanya muncul jika baris diaktifkan
-    if checked:
-        if st.button("Hapus", key=f"delete_{index}"):
-            st.session_state.df = st.session_state.df.drop(index=index)
-            st.rerun()
-
-# Tampilkan tabel dengan kolom Actions
-st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan"]])  # Sembunyikan kolom "Pilih"
+# Tombol "Hapus" untuk menghapus semua baris yang dipilih
+if st.button("Hapus yang dipilih"):
+    indexes_to_delete = st.session_state.df[st.session_state.df["Pilih"]].index
+    st.session_state.df = st.session_state.df.drop(indexes_to_delete)
+    st.rerun()
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
