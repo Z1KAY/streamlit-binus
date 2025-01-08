@@ -31,26 +31,24 @@ if st.button("Add"):
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
-# --- Perubahan 1: Tambahkan kolom "Actions" dan tombol "Hapus" ---
-st.session_state.df['Actions'] = st.session_state.df.index.map(lambda x: st.button("Hapus", key=f"delete_{x}"))
-
 # Tampilkan tabel
 st.write(st.session_state.df)
 
-# Opsi untuk menghapus baris
-indexes_to_delete = []
-for index in st.session_state.df.index:
-    if st.session_state.get(f"delete_{index}"):
-        indexes_to_delete.append(index) 
+# Opsi untuk menghapus beberapa baris
+selected_rows = st.multiselect("Pilih baris yang akan dihapus:", st.session_state.df.index)
+if st.button("Hapus"):
+    if selected_rows:
+        st.session_state.df = st.session_state.df.drop(index=selected_rows)
+        st.success(f"Baris {', '.join(map(str, selected_rows))} berhasil dihapus.")
+    else:
+        st.warning("Pilih setidaknya satu baris untuk dihapus.")
+    st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
 
-if indexes_to_delete:
-    st.session_state.df = st.session_state.df.drop(indexes_to_delete)
-    st.rerun()
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
-    label="Download CSV",
+    label="Unduh CSV",
     data=csv,
     file_name="kalkulator_hasil.csv",
     mime="text/csv",
