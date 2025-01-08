@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Kalkulator Biaya Produksi, Harga Jual, dan Keuntungan")
+st.title("Profit Counter Calculator")
 
 # Inisialisasi session state untuk menyimpan data tabel
 if "df" not in st.session_state:
@@ -47,8 +47,8 @@ if st.button("Hapus"):
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
-    label="Unduh CSV",
+    label="Downlaod CSV",
     data=csv,
-    file_name="kalkulator_hasil.csv",
+    file_name="hasil.csv",
     mime="text/csv",
 )
