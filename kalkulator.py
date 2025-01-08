@@ -38,11 +38,14 @@ st.session_state.df['Actions'] = st.session_state.df.index.map(lambda x: st.butt
 st.write(st.session_state.df)
 
 # Opsi untuk menghapus baris
+indexes_to_delete = []
 for index in st.session_state.df.index:
     if st.session_state.get(f"delete_{index}"):
-        st.session_state.df = st.session_state.df.drop(index=index)
-        st.rerun()
-        break
+        indexes_to_delete.append(index) 
+
+if indexes_to_delete:
+    st.session_state.df = st.session_state.df.drop(indexes_to_delete)
+    st.rerun()
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
