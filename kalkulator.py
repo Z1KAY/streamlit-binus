@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Profit Counter Calculator")
+st.title("Kalkulator Biaya Produksi, Harga Jual, dan Keuntungan")
 
 # Inisialisasi session state untuk menyimpan data tabel
 if "df" not in st.session_state:
@@ -35,18 +35,19 @@ if st.button("Add"):
 st.write(st.session_state.df)
 
 # Opsi untuk menghapus baris
-row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0)  # Default value to 0
+row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
 if st.button("Hapus"):
     try:
         st.session_state.df = st.session_state.df.drop(index=row_to_delete)
         st.success(f"Baris {row_to_delete} berhasil dihapus.")
+        st.experimental_rerun() # Menjalankan ulang skrip untuk memperbarui UI
     except KeyError:
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
-    label="Download CSV",
+    label="Unduh CSV",
     data=csv,
     file_name="kalkulator_hasil.csv",
     mime="text/csv",
