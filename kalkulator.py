@@ -28,27 +28,29 @@ if st.button("Add"):
         "Markup (%)": [markup],
         "Harga Jual": [harga_jual],
         "Keuntungan": [keuntungan],
+        "Pilih": [False],  # Inisialisasi kolom "Pilih" dengan False
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
-# Tampilkan tabel
-st.write(st.session_state.df)
+# Tambahkan kolom "Actions" dan tombol "Hapus" (Dimodifikasi)
+for index in st.session_state.df.index:
+    # Checkbox untuk mengaktifkan/menonaktifkan baris
+    checked = st.checkbox("Pilih", key=f"checkbox_{index}", value=st.session_state.df.loc[index, "Pilih"])
+    st.session_state.df.loc[index, "Pilih"] = checked
 
-# Opsi untuk menghapus beberapa baris
-selected_rows = st.multiselect("Pilih baris yang akan dihapus:", st.session_state.df.index)
-if st.button("Hapus"):
-    if selected_rows:
-        st.session_state.df = st.session_state.df.drop(index=selected_rows)
-        st.success(f"Baris {', '.join(map(str, selected_rows))} berhasil dihapus.")
-    else:
-        st.warning("Pilih setidaknya satu baris untuk dihapus.")
-    st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
+    # Tombol "Hapus" hanya muncul jika baris diaktifkan
+    if checked:
+        if st.button("Hapus", key=f"delete_{index}"):
+            st.session_state.df = st.session_state.df.drop(index=index)
+            st.experimental_rerun()
 
+# Tampilkan tabel dengan kolom Actions
+st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan"]])  # Sembunyikan kolom "Pilih"
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
-    label="Unduh CSV",
+    label="Download CSV",
     data=csv,
     file_name="kalkulator_hasil.csv",
     mime="text/csv",
