@@ -42,7 +42,7 @@ for index in st.session_state.df.index:
     if checked:
         if st.button("Hapus", key=f"delete_{index}"):
             st.session_state.df = st.session_state.df.drop(index=index)
-            st.experimental_rerun()
+            st.rerun()
 
 # Tampilkan tabel dengan kolom Actions
 st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan"]])  # Sembunyikan kolom "Pilih"
