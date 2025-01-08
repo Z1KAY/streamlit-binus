@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Profit Counter Calculator")
+st.title("tes lagi")
 
 # Inisialisasi session state untuk menyimpan data tabel
 if "df" not in st.session_state:
@@ -44,8 +44,8 @@ if st.button("Hapus"):
     except KeyError:
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
-# Download
-csv = df.to_csv(index=False)
+# Tombol unduh CSV
+csv = st.session_state.df.to_csv(index=False)
 st.download_button(
     label="Download CSV",
     data=csv,
