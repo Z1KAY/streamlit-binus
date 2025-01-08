@@ -1,9 +1,5 @@
-!pip install openpyxl==3.1.5
-
 import streamlit as st
 import pandas as pd
-from io import BytesIO
-import openpyxl
 
 st.title("Profit Counter Calculator")
 
@@ -49,18 +45,9 @@ if st.button("Hapus"):
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
 # Download
-def to_excel(df):
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='openpyxl')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    writer.save()
-    processed_data = output.getvalue()
-    return processed_data
-
-excel_data = to_excel(st.session_state.df)
+csv = df.to_csv(index=False)
 st.download_button(
-    label="Unduh Excel",
-    data=excel_data,
-    file_name="kalkulator_hasil.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
+    label="Download CSV",
+    data=csv,
+    file_name="kalkulator_hasil.csv",
+    mime="text/csv",
