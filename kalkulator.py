@@ -37,8 +37,8 @@ st.write(st.session_state.df)
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
-    label="Unduh CSV",
+    label="Download CSV",
     data=csv,
-    file_name="kalkulator_hasil.csv",
+    file_name="hasil.csv",
     mime="text/csv",
 )
