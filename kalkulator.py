@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from IPython.display import display, HTML
 
 st.title("Profit Counter Calculator")
 
@@ -31,37 +32,33 @@ if st.button("Add"):
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
-# --- Perubahan 1: Tambahkan kolom "Actions" dan tombol "Hapus" ---
-st.session_state.df['Actions'] = st.session_state.df.index.map(lambda x: st.button("Hapus", key=f"delete_{x}"))
-
 # Tampilkan tabel
 st.write(st.session_state.df)
 
-# Opsi untuk menghapus baris
-for index in st.session_state.df.index:
-    if st.session_state.get(f"delete_{index}"):
-        st.session_state.df = st.session_state.df.drop(index=index)
-        st.experimental_rerun()
-        break
-
-# Fungsi untuk menghasilkan laporan
+# Fungsi untuk generate laporan
 def generate_report(df):
-    total_biaya_produksi = df["Biaya Produksi"].sum()
-    total_harga_jual = df["Harga Jual"].sum()
-    total_keuntungan = df["Keuntungan"].sum()
-
     report = f"""
-    ## Laporan Hasil Perhitungan
-
-    **Total Biaya Produksi:** Rp {total_biaya_produksi:,.2f}
-    **Total Harga Jual:** Rp {total_harga_jual:,.2f}
-    **Total Keuntungan:** Rp {total_keuntungan:,.2f}
+    <h2>Laporan Hasil Kalkulator Profit Counter</h2>
+    <p>Berikut adalah hasil perhitungan profit counter:</p>
+    {df.to_html()}
+    <p>Total Biaya Produksi: {df['Biaya Produksi'].sum():,.2f}</p>
+    <p>Total Harga Jual: {df['Harga Jual'].sum():,.2f}</p>
+    <p>Total Keuntungan: {df['Keuntungan'].sum():,.2f}</p>
     """
-    return report
+    display(HTML(report))
 
-# Tampilkan laporan
-st.markdown(generate_report(st.session_state.df))
+# Generate laporan
+generate_report(st.session_state.df)
 
+# Opsi untuk menghapus baris
+row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
+if st.button("Hapus"):
+    try:
+        st.session_state.df = st.session_state.df.drop(index=row_to_delete)
+        st.success(f"Baris {row_to_delete} berhasil dihapus.")
+        st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
+    except KeyError:
+        st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
