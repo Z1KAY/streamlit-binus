@@ -44,6 +44,25 @@ for index in st.session_state.df.index:
         st.experimental_rerun()
         break
 
+# Fungsi untuk menghasilkan laporan
+def generate_report(df):
+    total_biaya_produksi = df["Biaya Produksi"].sum()
+    total_harga_jual = df["Harga Jual"].sum()
+    total_keuntungan = df["Keuntungan"].sum()
+
+    report = f"""
+    ## Laporan Hasil Perhitungan
+
+    **Total Biaya Produksi:** Rp {total_biaya_produksi:,.2f}
+    **Total Harga Jual:** Rp {total_harga_jual:,.2f}
+    **Total Keuntungan:** Rp {total_keuntungan:,.2f}
+    """
+    return report
+
+# Tampilkan laporan
+st.markdown(generate_report(st.session_state.df))
+
+
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
