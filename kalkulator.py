@@ -34,11 +34,6 @@ if st.button("Add"):
 # Tampilkan tabel
 st.write(st.session_state.df)
 
-# Laporan sederhana
-st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
-st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
-st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
-
 # Opsi untuk menghapus baris
 row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
 if st.button("Hapus"):
@@ -48,6 +43,11 @@ if st.button("Hapus"):
         st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
     except KeyError:
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
+
+# Laporan sederhana
+st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
+st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
+st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
