@@ -1,3 +1,5 @@
+!pip install babel==2.12.1
+
 import streamlit as st
 import pandas as pd
 from babel.numbers import format_currency
