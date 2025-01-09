@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from babel.numbers import format_currency
 
 st.title("Profit Counter Calculator")
 
@@ -31,18 +32,27 @@ if st.button("Add"):
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
+# --- Perubahan 1: Tambahkan kolom "Actions" dan tombol "Hapus" ---
+st.session_state.df['Actions'] = st.session_state.df.index.map(lambda x: st.button("Hapus", key=f"delete_{x}"))
+
+# Fungsi untuk memformat mata uang
+def format_rupiah(amount):
+    return format_currency(amount, 'IDR', locale='id_ID')
+
+# Terapkan format mata uang ke kolom yang relevan
+st.session_state.df['Biaya Produksi'] = st.session_state.df['Biaya Produksi'].apply(format_rupiah)
+st.session_state.df['Harga Jual'] = st.session_state.df['Harga Jual'].apply(format_rupiah)
+st.session_state.df['Keuntungan'] = st.session_state.df['Keuntungan'].apply(format_rupiah)
+
 # Tampilkan tabel
-st.write(st.session_state.df)
+st.dataframe(st.session_state.df)
 
 # Opsi untuk menghapus baris
-row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
-if st.button("Hapus"):
-    try:
-        st.session_state.df = st.session_state.df.drop(index=row_to_delete)
-        st.success(f"Baris {row_to_delete} berhasil dihapus.")
-        st.rerun() # Menjalankan ulang skrip untuk memperbarui UI
-    except KeyError:
-        st.error(f"Baris {row_to_delete} tidak ditemukan.")
+for index in st.session_state.df.index:
+    if st.session_state.get(f"delete_{index}"):
+        st.session_state.df = st.session_state.df.drop(index=index)
+        st.experimental_rerun()
+        break
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
