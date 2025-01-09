@@ -58,6 +58,13 @@ if st.button("Add"):
 # Tampilkan tabel pertama (tanpa kolom "Biaya per Produk")
 st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pajak", "Jumlah Produk"]])
 
+# Tabel biaya produksi per produk
+biaya_per_produk_df = st.session_state.df[["Nama", "Biaya Produksi", "Jumlah Produk"]]
+biaya_per_produk_df["Biaya per Produk"] = biaya_per_produk_df["Biaya Produksi"] / biaya_per_produk_df["Jumlah Produk"]
+biaya_per_produk_df = biaya_per_produk_df[["Nama", "Biaya per Produk"]]
+st.write("Biaya Produksi per Produk:")
+st.write(biaya_per_produk_df)
+
 # Opsi untuk menghapus baris
 row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
 if st.button("Hapus"):
@@ -74,13 +81,6 @@ st.write(f"Total Harga Jual: Rp {st.session_state.df['Harga Jual'].sum():,.2f}")
 st.write(f"Total Keuntungan: Rp {st.session_state.df['Keuntungan'].sum():,.2f}")
 st.write(f"Total Pajak: Rp {st.session_state.df['Pajak'].sum():,.2f}")
 st.write(f"Total Jumlah Produk: {st.session_state.df['Jumlah Produk'].sum()}") 
-
-# Tabel biaya produksi per produk
-biaya_per_produk_df = st.session_state.df[["Nama", "Biaya Produksi", "Jumlah Produk"]]
-biaya_per_produk_df["Biaya per Produk"] = biaya_per_produk_df["Biaya Produksi"] / biaya_per_produk_df["Jumlah Produk"]
-biaya_per_produk_df = biaya_per_produk_df[["Nama", "Biaya per Produk"]]
-st.write("Biaya Produksi per Produk:")
-st.write(biaya_per_produk_df)
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
