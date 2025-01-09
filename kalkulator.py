@@ -1,8 +1,5 @@
-!pip install babel==2.12.1
-
 import streamlit as st
 import pandas as pd
-from babel.numbers import format_currency
 
 st.title("Profit Counter Calculator")
 
@@ -37,17 +34,8 @@ if st.button("Add"):
 # --- Perubahan 1: Tambahkan kolom "Actions" dan tombol "Hapus" ---
 st.session_state.df['Actions'] = st.session_state.df.index.map(lambda x: st.button("Hapus", key=f"delete_{x}"))
 
-# Fungsi untuk memformat mata uang
-def format_rupiah(amount):
-    return format_currency(amount, 'IDR', locale='id_ID')
-
-# Terapkan format mata uang ke kolom yang relevan
-st.session_state.df['Biaya Produksi'] = st.session_state.df['Biaya Produksi'].apply(format_rupiah)
-st.session_state.df['Harga Jual'] = st.session_state.df['Harga Jual'].apply(format_rupiah)
-st.session_state.df['Keuntungan'] = st.session_state.df['Keuntungan'].apply(format_rupiah)
-
 # Tampilkan tabel
-st.dataframe(st.session_state.df)
+st.write(st.session_state.df)
 
 # Opsi untuk menghapus baris
 for index in st.session_state.df.index:
