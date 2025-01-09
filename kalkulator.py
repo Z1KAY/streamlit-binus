@@ -37,9 +37,9 @@ else:
     harga_jual = biaya_produksi + (biaya_produksi * (markup / 100))
     keuntungan = harga_jual - biaya_produksi
     pajak_rp = 0
-    
+
 # Hitung biaya produksi per produk
-biaya_per_produk = biaya_produksi / jumlah_produk if jumlah_produk > 0 else 0  # Handle division by zero
+biaya_per_produk = biaya_produksi / jumlah_produk if jumlah_produk > 0 else 0
 
 # Tambahkan data ke tabel jika tombol "Add" ditekan
 if st.button("Add"):
@@ -51,11 +51,12 @@ if st.button("Add"):
         "Keuntungan": [keuntungan],
         "Pajak": [pajak_rp],
         "Jumlah Produk": [jumlah_produk],
+        # "Biaya per Produk": [biaya_per_produk],  # Hapus baris ini
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
-# Tampilkan tabel
-st.write(st.session_state.df)
+# Tampilkan tabel pertama (tanpa kolom "Biaya per Produk")
+st.write(st.session_state.df[["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pajak", "Jumlah Produk"]])
 
 # Opsi untuk menghapus baris
 row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
@@ -72,11 +73,14 @@ st.write(f"Total Biaya Produksi: Rp {st.session_state.df['Biaya Produksi'].sum()
 st.write(f"Total Harga Jual: Rp {st.session_state.df['Harga Jual'].sum():,.2f}")
 st.write(f"Total Keuntungan: Rp {st.session_state.df['Keuntungan'].sum():,.2f}")
 st.write(f"Total Pajak: Rp {st.session_state.df['Pajak'].sum():,.2f}")
-st.write(f"Total Jumlah Produk: {st.session_state.df['Jumlah Produk'].sum()}")
+st.write(f"Total Jumlah Produk: {st.session_state.df['Jumlah Produk'].sum()}") 
 
-biaya_per_produk_df = st.session_state.df[["Nama", "Biaya per Produk"]]  # Pilih kolom yang relevan
-st.write("Biaya Produksi per Produk:")  # Judul tabel
-st.write(biaya_per_produk_df)  # Tampilkan tabel
+# Tabel biaya produksi per produk
+biaya_per_produk_df = st.session_state.df[["Nama", "Biaya Produksi", "Jumlah Produk"]]
+biaya_per_produk_df["Biaya per Produk"] = biaya_per_produk_df["Biaya Produksi"] / biaya_per_produk_df["Jumlah Produk"]
+biaya_per_produk_df = biaya_per_produk_df[["Nama", "Biaya per Produk"]]
+st.write("Biaya Produksi per Produk:")
+st.write(biaya_per_produk_df)
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
