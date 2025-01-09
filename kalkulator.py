@@ -34,20 +34,13 @@ if st.button("Add"):
 # Tampilkan tabel
 st.write(st.session_state.df)
 
-# Fungsi untuk generate laporan
-def generate_report(df):
-    report = f"""
-    <h2>Laporan Hasil Kalkulator Profit Counter</h2>
-    <p>Berikut adalah hasil perhitungan profit counter:</p>
-    {df.to_html()}
-    <p>Total Biaya Produksi: {df['Biaya Produksi'].sum():,.2f}</p>
-    <p>Total Harga Jual: {df['Harga Jual'].sum():,.2f}</p>
-    <p>Total Keuntungan: {df['Keuntungan'].sum():,.2f}</p>
-    """
-    display(HTML(report))
-
-# Generate laporan
-generate_report(st.session_state.df)
+# Laporan sederhana
+st.write("## Laporan Hasil Kalkulator Profit Counter")
+st.write("Berikut adalah hasil perhitungan profit counter:")
+st.write(st.session_state.df)  # Menampilkan tabel kembali di laporan
+st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
+st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
+st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
 
 # Opsi untuk menghapus baris
 row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
