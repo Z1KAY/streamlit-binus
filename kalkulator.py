@@ -35,9 +35,8 @@ if st.button("Add"):
 st.write(st.session_state.df)
 
 # Laporan sederhana
-st.write("## Laporan Hasil Kalkulator Profit Counter")
 st.write("Berikut adalah hasil perhitungan profit counter:")
-st.write(st.session_state.df)  # Menampilkan tabel kembali di laporan
+
 st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
 st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
 st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
