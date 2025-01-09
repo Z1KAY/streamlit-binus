@@ -75,6 +75,10 @@ st.write(f"Total Keuntungan: Rp {st.session_state.df['Keuntungan'].sum():,.2f}")
 st.write(f"Total Pajak: Rp {st.session_state.df['Pajak'].sum():,.2f}")
 st.write(f"Total Jumlah Produk: {st.session_state.df['Jumlah Produk'].sum()}")
 
+biaya_per_produk_df = st.session_state.df[["Nama", "Biaya per Produk"]]  # Pilih kolom yang relevan
+st.write("Biaya Produksi per Produk:")  # Judul tabel
+st.write(biaya_per_produk_df)  # Tampilkan tabel
+
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
 st.download_button(
