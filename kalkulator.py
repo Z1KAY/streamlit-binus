@@ -5,7 +5,7 @@ st.title("Profit Counter Calculator")
 
 # Inisialisasi session state untuk menyimpan data tabel
 if "df" not in st.session_state:
-    st.session_state.df = pd.DataFrame(columns=["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pajak", "Jumlah Produk", "Biaya per Produk"])
+    st.session_state.df = pd.DataFrame(columns=["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pajak", "Jumlah Produk"])
 
 # Hitung total biaya produksi
 total_biaya_produksi = st.session_state.df['Biaya Produksi'].sum()
@@ -51,8 +51,6 @@ if st.button("Add"):
         "Keuntungan": [keuntungan],
         "Pajak": [pajak_rp],
         "Jumlah Produk": [jumlah_produk],
-        "Biaya per Produk": [biaya_per_produk],
-        
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
