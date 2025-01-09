@@ -7,6 +7,15 @@ st.title("Profit Counter Calculator")
 if "df" not in st.session_state:
     st.session_state.df = pd.DataFrame(columns=["Nama", "Biaya Produksi", "Markup (%)", "Harga Jual", "Keuntungan", "Pajak"])
 
+# Hitung total biaya produksi
+total_biaya_produksi = st.session_state.df['Biaya Produksi'].sum()
+
+# Input pajak jika total biaya produksi <= 4.8 miliar
+if total_biaya_produksi <= 4800000000:
+    pajak_aktif = st.checkbox("Pajak 0,5% (hanya jika total biaya produksi <= 4,8 miliar)")
+else:
+    pajak_aktif = False  # Pajak tidak berlaku jika total biaya produksi > 4,8 miliar
+
 # Input nama
 nama = st.text_input("Nama Produk")
 
@@ -16,21 +25,15 @@ biaya_produksi = st.number_input("Biaya Produksi (Rp)", min_value=0.0, format="%
 # Input markup (dalam persentase)
 markup = st.number_input("Markup (%)", min_value=0.0, format="%.2f")
 
-# Input pajak jika biaya produksi <= 4.8 miliar
-if biaya_produksi <= 4800000000:
-    pajak = st.checkbox("Pajak 0,5% (hanya jika biaya produksi <= 4,8 miliar)")
-else:
-    pajak = False  # Pajak tidak berlaku jika biaya produksi > 4,8 miliar
-
 # Hitung harga jual dan keuntungan
-if pajak:
-    harga_jual = biaya_produksi + (biaya_produksi * (markup / 100)) + (biaya_produksi * 0.005)  # Tambahkan pajak 0,5%
-    keuntungan = harga_jual - biaya_produksi - (biaya_produksi * 0.005)  # Kurangi pajak dari keuntungan
-    pajak_rp = biaya_produksi * 0.005 # Hitung nilai pajak dalam rupiah
+if pajak_aktif:
+    harga_jual = biaya_produksi + (biaya_produksi * (markup / 100)) + (biaya_produksi * 0.005)
+    keuntungan = harga_jual - biaya_produksi - (biaya_produksi * 0.005)
+    pajak_rp = biaya_produksi * 0.005
 else:
     harga_jual = biaya_produksi + (biaya_produksi * (markup / 100))
     keuntungan = harga_jual - biaya_produksi
-    pajak_rp = 0  # Pajak 0 jika tidak berlaku
+    pajak_rp = 0
 
 # Tambahkan data ke tabel jika tombol "Add" ditekan
 if st.button("Add"):
@@ -40,7 +43,7 @@ if st.button("Add"):
         "Markup (%)": [markup],
         "Harga Jual": [harga_jual],
         "Keuntungan": [keuntungan],
-        "Pajak": [pajak_rp], # tambahkan kolom pajak
+        "Pajak": [pajak_rp],
     })
     st.session_state.df = pd.concat([st.session_state.df, new_data], ignore_index=True)
 
@@ -61,6 +64,7 @@ if st.button("Hapus"):
 st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
 st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
 st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
+st.write(f"Total Pajak: {st.session_state.df['Pajak'].sum():,.2f}") # tambahkan total pajak
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
