@@ -61,10 +61,10 @@ if st.button("Hapus"):
         st.error(f"Baris {row_to_delete} tidak ditemukan.")
 
 # Laporan sederhana
-st.write(f"Total Biaya Produksi: {st.session_state.df['Biaya Produksi'].sum():,.2f}")
-st.write(f"Total Harga Jual: {st.session_state.df['Harga Jual'].sum():,.2f}")
-st.write(f"Total Keuntungan: {st.session_state.df['Keuntungan'].sum():,.2f}")
-st.write(f"Total Pajak: {st.session_state.df['Pajak'].sum():,.2f}") # tambahkan total pajak
+st.write(f"Total Biaya Produksi: Rp {st.session_state.df['Biaya Produksi'].sum():,.2f}")
+st.write(f"Total Harga Jual: Rp {st.session_state.df['Harga Jual'].sum():,.2f}")
+st.write(f"Total Keuntungan: Rp {st.session_state.df['Keuntungan'].sum():,.2f}")
+st.write(f"Total Pajak: Rp {st.session_state.df['Pajak'].sum():,.2f}")
 
 # Tombol unduh CSV
 csv = st.session_state.df.to_csv(index=False)
