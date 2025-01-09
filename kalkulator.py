@@ -47,9 +47,6 @@ if st.button("Add"):
 # Tampilkan tabel
 st.write(st.session_state.df)
 
-# Tampilkan tabel
-st.write(st.session_state.df)
-
 # Opsi untuk menghapus baris
 row_to_delete = st.number_input("Hapus Baris (indeks dimulai dari 0)", min_value=0, step=1, value=0) 
 if st.button("Hapus"):
