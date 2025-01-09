@@ -73,7 +73,7 @@ st.write(f"Total Biaya Produksi: Rp {st.session_state.df['Biaya Produksi'].sum()
 st.write(f"Total Harga Jual: Rp {st.session_state.df['Harga Jual'].sum():,.2f}")
 st.write(f"Total Keuntungan: Rp {st.session_state.df['Keuntungan'].sum():,.2f}")
 st.write(f"Total Pajak: Rp {st.session_state.df['Pajak'].sum():,.2f}")
-st.write(f"Jumlah Produk: {jumlah_produk}")
+st.write(f"Total Jumlah Produk: {st.session_state.df['Jumlah Produk'].sum()}")
 st.write(f"Biaya Produksi per Produk: Rp {biaya_per_produk:,.2f}")
 
 # Tombol unduh CSV
