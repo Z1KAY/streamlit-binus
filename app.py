@@ -33,22 +33,16 @@ def add_product(product_id, product_name, category, price, rating, stock):
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
 
 def update_product(product_id, quantity, new_price=None, new_rating=None):
-    """
-    Memperbarui stok, harga, dan rating produk.
-
-    Args:
-        product_id: ID produk yang ingin diperbarui.
-        quantity: Jumlah stok yang ingin ditambahkan.
-        new_price: Harga baru produk (opsional).
-        new_rating: Rating baru produk (opsional).
-    """
     global inventory
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
-    if new_price is not None:
-        inventory.loc[inventory['product_id'] == product_id, 'price'] = new_price
-    if new_rating is not None:
-        inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating
     
+    # Perbarui harga hanya jika new_price tidak kosong
+    if new_price:  
+        inventory.loc[inventory['product_id'] == product_id, 'price'] = new_price
+    
+    # Perbarui rating hanya jika new_rating tidak kosong
+    if new_rating:  
+        inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating
 
 def remove_product(product_id):
     global inventory
