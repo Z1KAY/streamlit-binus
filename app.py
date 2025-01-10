@@ -1,10 +1,11 @@
 import streamlit as st
 import pandas as pd
 
-# Fungsi untuk membaca dataset dari CSV 
+# Fungsi untuk membaca dataset dari CSV dan menghapus kolom 'Unnamed: 0'
 def load_inventory():
     try:
         inventory = pd.read_csv('inventory.csv')
+        inventory = inventory.drop(columns=['Unnamed: 0'], errors='ignore')  # Hapus kolom 'Unnamed: 0' jika ada
     except FileNotFoundError:
         st.error("File 'inventory.csv' tidak ditemukan. Pastikan file tersebut ada di direktori yang sama dengan notebook ini.")
         return pd.DataFrame()  # Mengembalikan DataFrame kosong jika file tidak ditemukan
