@@ -32,8 +32,23 @@ def add_product(product_id, product_name, category, price, rating, stock):
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
 
-def update_stock(product_id, quantity):
+def update_product(product_id, quantity, new_price=None, new_rating=None):
+    """
+    Memperbarui stok, harga, dan rating produk.
+
+    Args:
+        product_id: ID produk yang ingin diperbarui.
+        quantity: Jumlah stok yang ingin ditambahkan.
+        new_price: Harga baru produk (opsional).
+        new_rating: Rating baru produk (opsional).
+    """
+    global inventory
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
+    if new_price is not None:
+        inventory.loc[inventory['product_id'] == product_id, 'price'] = new_price
+    if new_rating is not None:
+        inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating
+    
 
 def remove_product(product_id):
     global inventory
@@ -66,9 +81,11 @@ def main():
     elif menu_option == "Perbarui Stok":
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         quantity = st.number_input("Masukkan jumlah stok yang ingin ditambahkan:", step=1)
+        new_price = st.number_input("Masukkan harga baru (opsional):", step=1000.0)
+        new_rating = st.number_input("Masukkan rating baru (opsional):", min_value=0.0, max_value=5.0, step=0.1)
         if st.button("Perbarui"):
-            update_stock(product_id, quantity)
-            st.success("Stok berhasil diperbarui.")
+            update_product(product_id, quantity, new_price, new_rating)
+            st.success("Produk berhasil diperbarui.")
     elif menu_option == "Hapus Produk":
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         if st.button("Hapus"):
