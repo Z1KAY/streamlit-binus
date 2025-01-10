@@ -1,49 +1,21 @@
 import streamlit as st
 import pandas as pd
 
-data = {
-    'product_id': list(range(1, 31)),
-    'product_name': [
-        'Kursi Kayu', 'Meja Makan', 'Kursi Kantor', 'Rak Buku', 'Meja Kopi',
-        'Sofa Recliner', 'Meja Samping', 'Kursi Makan', 'Rak TV', 'Kursi Santai',
-        'Lemari Pakaian', 'Meja Belajar', 'Sofa Bed', 'Kursi Lesehan', 'Rak Dinding',
-        'Meja Rias', 'Kursi Tamu', 'Lemari Penyimpanan', 'Meja Samping Modern', 'Sofa Minimalis',
-        'Kursi Bar', 'Meja Kerja', 'Kursi Lipat', 'Rak Sepatu', 'Meja TV',
-        'Sofa Keluarga', 'Kursi Goyang', 'Meja Makan Bulat', 'Rak Dapur', 'Kursi Santai Modern'
-    ],
-    'category': [
-        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
-        'Sofa', 'Meja', 'Kursi', 'Rak', 'Sofa',
-        'Lemari', 'Meja', 'Sofa', 'Kursi', 'Rak',
-        'Meja', 'Kursi', 'Lemari', 'Meja', 'Sofa',
-        'Kursi', 'Meja', 'Kursi', 'Rak', 'Meja',
-        'Sofa', 'Kursi', 'Meja', 'Rak', 'Kursi'
-    ],
-    'price': [
-        500000, 1500000, 750000, 1000000, 800000,
-        3000000, 400000, 600000, 1200000, 2000000,
-        2500000, 900000, 3500000, 450000, 700000,
-        1000000, 1200000, 2000000, 500000, 2800000,
-        600000, 1200000, 300000, 800000, 1500000,
-        3500000, 900000, 2000000, 1000000, 600000
-    ],
-    'rating': [
-        4.5, 4.7, 4.2, 4.6, 4.3,
-        4.8, 4.1, 4.4, 4.5, 4.6,
-        4.7, 4.3, 4.9, 4.2, 4.5,
-        4.6, 4.8, 4.1, 4.4, 4.3,
-        4.7, 4.5, 4.2, 4.6, 4.4,
-        4.8, 4.3, 4.5, 4.6, 4.2
-    ],
-    'stock': [10] * 30  # Menambahkan stok awal untuk setiap produk
-}
+# Fungsi untuk membaca dataset dari CSV 
+def load_inventory():
+    try:
+        inventory = pd.read_csv('inventory.csv')
+    except FileNotFoundError:
+        st.error("File 'inventory.csv' tidak ditemukan. Pastikan file tersebut ada di direktori yang sama dengan notebook ini.")
+        return pd.DataFrame()  # Mengembalikan DataFrame kosong jika file tidak ditemukan
+    return inventory
 
-# Membuat DataFrame dari data
-inventory = pd.DataFrame(data)
+# Memuat dataset saat program dimulai
+inventory = load_inventory()
 
 def display_inventory():
     st.subheader("Daftar Inventaris")
-    st.dataframe(inventory, use_container_width=True)  # Display using st.dataframe
+    st.dataframe(inventory, use_container_width=True)  
 
 def search_product(query):
     results = inventory[inventory['category'].str.contains(query, case=False)]
@@ -81,7 +53,7 @@ def main():
         if st.button("Cari"):
             search_product(query)
     elif menu_option == "Tambah Produk":
-        product_id = st.number_input("Masukkan ID Produk:", value=inventory['product_id'].max() + 1, step=1)
+        product_id = st.number_input("Masukkan ID Produk:", value=inventory['product_id'].max() + 1 if not inventory.empty else 1, step=1)
         product_name = st.text_input("Masukkan Nama Produk:")
         category = st.text_input("Masukkan Kategori:")
         price = st.number_input("Masukkan Harga:", step=1000.0)
@@ -100,6 +72,9 @@ def main():
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         if st.button("Hapus"):
             remove_product(product_id)
+
+    # Menyimpan dataset ke CSV saat program selesai
+    inventory.to_csv('inventory.csv', index=False)
 
 if __name__ == "__main__":
     main()
