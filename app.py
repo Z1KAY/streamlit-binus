@@ -28,9 +28,13 @@ def search_product(query):
 
 def add_product(product_id, product_name, category, price, rating, stock):
     global inventory
+    if product_id in inventory['product_id'].values:
+        st.error(f"Produk dengan ID {product_id} sudah ada.")
+        return
     new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
+    st.success("Produk berhasil ditambahkan.")
 
 def update_product(product_id, quantity, new_price=None, new_rating=None):
     global inventory
@@ -42,7 +46,7 @@ def update_product(product_id, quantity, new_price=None, new_rating=None):
     
     # Perbarui rating hanya jika new_rating tidak kosong
     if new_rating:  
-        inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating
+        inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating 
 
 def remove_product(product_id):
     global inventory
@@ -71,7 +75,6 @@ def main():
         stock = st.number_input("Masukkan Jumlah Stok:", step=1)
         if st.button("Tambah"):
             add_product(product_id, product_name, category, price, rating, stock)
-            st.success("Produk berhasil ditambahkan.")
     elif menu_option == "Perbarui Stok":
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         quantity = st.number_input("Masukkan jumlah stok yang ingin ditambahkan:", step=1)
