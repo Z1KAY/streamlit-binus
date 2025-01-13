@@ -56,7 +56,7 @@ def update_product(product_id, quantity, new_price=None, new_rating=None):
     current_stock = inventory.loc[inventory['product_id'] == product_id, 'stock'].values[0]
     if current_stock + quantity > 500:
         st.error(f"Stok total untuk produk ini melebihi batas maksimum (500). Stok tidak dapat diperbarui.")
-        return
+        return  # Menghentikan eksekusi fungsi jika stok melebihi batas
     
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
     
@@ -67,6 +67,8 @@ def update_product(product_id, quantity, new_price=None, new_rating=None):
     # Perbarui rating hanya jika new_rating tidak kosong
     if new_rating:  
         inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating 
+    
+    st.success("Produk berhasil diperbarui.")  # Pesan sukses ditampilkan hanya jika pembaruan berhasil
 
 def remove_product(product_id):
     global inventory
@@ -102,7 +104,7 @@ def main():
         new_rating = st.number_input("Masukkan rating baru (opsional):", min_value=0.0, max_value=5.0, step=0.1)
         if st.button("Perbarui"):
             update_product(product_id, quantity, new_price, new_rating)
-            st.success("Produk berhasil diperbarui.")
+            
     elif menu_option == "Hapus Produk":
         product_id = st.selectbox("Pilih Produk:", inventory['product_id'].unique())
         if st.button("Hapus"):
