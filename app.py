@@ -38,6 +38,12 @@ def add_product(product_id, product_name, category, price, rating, stock):
     if product_id in inventory['product_id'].values:
         st.error(f"Produk dengan ID {product_id} sudah ada.")
         return
+    
+    # Validasi stok total
+    if inventory['stock'].sum() + stock > 500:
+        st.error(f"Stok total melebihi batas maksimum (500). Produk tidak dapat ditambahkan.")
+        return
+
     new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
@@ -45,6 +51,13 @@ def add_product(product_id, product_name, category, price, rating, stock):
 
 def update_product(product_id, quantity, new_price=None, new_rating=None):
     global inventory
+    
+    # Validasi stok total
+    current_stock = inventory.loc[inventory['product_id'] == product_id, 'stock'].values[0]
+    if current_stock + quantity > 500:
+        st.error(f"Stok total untuk produk ini melebihi batas maksimum (500). Stok tidak dapat diperbarui.")
+        return
+    
     inventory.loc[inventory['product_id'] == product_id, 'stock'] += quantity
     
     # Perbarui harga hanya jika new_price tidak kosong
