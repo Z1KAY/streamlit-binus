@@ -17,6 +17,13 @@ inventory = load_inventory()
 def display_inventory():
     st.subheader("Daftar Inventaris")
     st.dataframe(inventory, use_container_width=True)  
+    
+    # Menambahkan indikator ketersediaan
+    total_stock = inventory['stock'].sum()
+    if total_stock < 100:
+        st.markdown(f"<p style='color: green;'>Gudang tersedia ({total_stock}/100)</p>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<p style='color: red;'>Gudang tidak tersedia ({total_stock}/100)</p>", unsafe_allow_html=True)
 
 def search_product(query):
     results = inventory[inventory['category'].str.contains(query, case=False)]
