@@ -128,4 +128,4 @@ elif menu == "Kirim Email Promosi":
     subject = st.text_input("Judul Email")
     message = st.text_area("Isi Pesan")
     if st.button("Kirim"):
-        send_email_promotion(subject, message)
+            send_email_promotion(subject, message)
