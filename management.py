@@ -133,6 +133,6 @@ elif menu == "Kirim Email Promosi":
     message = st.text_area("Isi Pesan")
     if st.button("Kirim"):
             send_email_promotion(subject, message)
-        
-    email = st.secrets["ammarutbk@gmail.com"]
-    password = st.secrets["Skyblockid345@."]
+    
+    sender_email = st.secrets["my_secrets"]["ammarutbk@gmail.com"]  
+    sender_password = st.secrets["my_secrets"]["Skyblockid345@."]
