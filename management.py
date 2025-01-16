@@ -5,8 +5,8 @@ from email.mime.multipart import MIMEMultipart
 import streamlit as st
 import os
 
-secrets_file_path = os.path.join(os.path.dirname(__file__), ".streamlit", "secrets.toml")
-st.write(st.secrets)
+# secrets_file_path = os.path.join(os.path.dirname(__file__), ".streamlit", "secrets.toml")
+# st.write(st.secrets)
 
 # Database setup
 conn = sqlite3.connect('customer_management.db', check_same_thread=False)
@@ -134,5 +134,8 @@ elif menu == "Kirim Email Promosi":
     if st.button("Kirim"):
             send_email_promotion(subject, message)
 
-    sender_email = st.secrets["testing"]["ammarutbk@gmail.com"]  
-        sender_password = st.secrets["my_secrets"]["Skyblockid345@."]
+    # Pastikan Anda telah menambahkan 'my_secrets' di secrets.toml atau Streamlit Cloud settings
+    # email = st.secrets["ammarutbk@gmail.com"]  # Hapus baris ini
+    # password = st.secrets["Skyblockid345@."] # Hapus baris ini
+    # sender_email = st.secrets["my_secrets"]["ammarutbk@gmail.com"]  # Hapus baris ini
+    # sender_password = st.secrets["my_secrets"]["Skyblockid345@."] # Hapus baris ini
