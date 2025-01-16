@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import streamlit as st
 
+st.write(st.secrets)
 # Database setup
 conn = sqlite3.connect('customer_management.db', check_same_thread=False)
 cursor = conn.cursor()
