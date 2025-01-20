@@ -1,15 +1,31 @@
 import streamlit as st
 import pandas as pd
+import csv
+import os
+from datetime import datetime
+
+# Nama file dataset
+data_file = 'inventory.csv'  
+
+# Fungsi untuk memastikan file dataset tersedia dan memiliki header yang benar
+def cek_dataset():
+    if not os.path.exists(data_file):
+        with open(data_file, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["product_id", "product_name", "category", "price", "rating", "stock"])  # Header kolom
 
 # Fungsi untuk membaca dataset dari CSV dan menghapus kolom 'Unnamed: 0'
 def load_inventory():
     try:
-        inventory = pd.read_csv('inventory.csv')
+        inventory = pd.read_csv(data_file)
         inventory = inventory.drop(columns=['Unnamed: 0'], errors='ignore')  # Hapus kolom 'Unnamed: 0' jika ada
     except FileNotFoundError:
-        st.error("File 'inventory.csv' tidak ditemukan. Pastikan file tersebut ada di direktori yang sama dengan notebook ini.")
+        st.error(f"File '{data_file}' tidak ditemukan. Pastikan file tersebut ada di direktori yang sama dengan notebook ini.")
         return pd.DataFrame()  # Mengembalikan DataFrame kosong jika file tidak ditemukan
     return inventory
+
+# Panggil fungsi cek_dataset untuk memastikan file dataset tersedia
+cek_dataset()  
 
 # Memuat dataset saat program dimulai
 inventory = load_inventory()
@@ -47,6 +63,12 @@ def add_product(product_id, product_name, category, price, rating, stock):
     new_product = {'product_id': product_id, 'product_name': product_name, 'category': category,
                    'price': price, 'rating': rating, 'stock': stock}
     inventory = pd.concat([inventory, pd.DataFrame([new_product])], ignore_index=True)
+    
+    # Tambahkan data ke file CSV menggunakan csv.writer
+    with open(data_file, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([product_id, product_name, category, price, rating, stock]) 
+
     st.success("Produk berhasil ditambahkan.")
 
 def update_product(product_id, quantity, new_price=None, new_rating=None):
@@ -68,12 +90,18 @@ def update_product(product_id, quantity, new_price=None, new_rating=None):
     if new_rating:  
         inventory.loc[inventory['product_id'] == product_id, 'rating'] = new_rating 
     
-    st.success("Produk berhasil diperbarui.")  # Pesan sukses ditampilkan hanya jika pembaruan berhasil
+    st.success("Produk berhasil diperbarui.")
+    
+    # Simpan perubahan ke file CSV
+    inventory.to_csv(data_file, index=False)  
 
 def remove_product(product_id):
     global inventory
     inventory = inventory[inventory['product_id'] != product_id]
     st.success(f"Produk dengan ID {product_id} berhasil dihapus.")
+    
+    # Simpan perubahan ke file CSV
+    inventory.to_csv(data_file, index=False)  
 
 def main():
     st.title("Manajemen Inventaris")
@@ -111,7 +139,7 @@ def main():
             remove_product(product_id)
 
     # Menyimpan dataset ke CSV saat program selesai
-    inventory.to_csv('inventory.csv', index=False)
+    inventory.to_csv(data_file, index=False)  # Menyimpan perubahan ke file CSV
 
 if __name__ == "__main__":
     main()
